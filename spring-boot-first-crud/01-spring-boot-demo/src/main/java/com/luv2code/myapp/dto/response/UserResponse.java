@@ -1,32 +1,17 @@
 package com.luv2code.myapp.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class UserResponse {
-    private Integer Id;
+    private Integer id;
     private String name;
     private String email;
-
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Integer getId() {
-        return Id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setId(Integer id) {
-        Id = id;
-    }
 }

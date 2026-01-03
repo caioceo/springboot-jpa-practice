@@ -8,20 +8,22 @@ import com.luv2code.myapp.mapper.UserMapper;
 import com.luv2code.myapp.models.User;
 import com.luv2code.myapp.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Getter
+@Setter
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    public UserService(UserRepository userRepository, UserMapper userMapper){
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     public List<UserResponse> listarUsers(){
         return userRepository.findAll()
@@ -67,6 +69,7 @@ public class UserService {
         }
         if(dto.getPassword().equals(user.getPassword())){
             user.setPassword(dto.getNewPassword());
+            userRepository.save(user);
             return userMapper.toDto(user);
         }
         throw new RuntimeException("error to update password");
@@ -99,6 +102,7 @@ public class UserService {
     public void deleteUser(Integer id){
         if(userRepository.existsById(id)){
             userRepository.deleteById(id);
+            return;
         }
         throw new EntityNotFoundException("ID not found");
     }
