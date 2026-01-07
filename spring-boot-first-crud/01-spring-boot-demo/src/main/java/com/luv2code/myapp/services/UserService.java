@@ -4,6 +4,7 @@ import com.luv2code.myapp.dto.request.CreateUserRequest;
 import com.luv2code.myapp.dto.request.UpdateUserPasswordRequest;
 import com.luv2code.myapp.dto.request.UpdateUserRequest;
 import com.luv2code.myapp.dto.response.UserResponse;
+import com.luv2code.myapp.exceptions.IdNotFoundException;
 import com.luv2code.myapp.mapper.UserMapper;
 import com.luv2code.myapp.models.User;
 import com.luv2code.myapp.repositories.UserRepository;
@@ -30,7 +31,7 @@ public class UserService {
     }
 
     public UserResponse findById(Integer id){
-            User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID not found"));
+            User user = userRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
             return userMapper.toDto(user);
     }
 
@@ -48,7 +49,7 @@ public class UserService {
 
     public UserResponse patchPassword(Integer id, UpdateUserPasswordRequest dto){
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("id not found"));
+                .orElseThrow(()-> new IdNotFoundException(id));
         if(dto.getPassword().equals(user.getPassword())){
             user.setPassword(dto.getNewPassword());
             userRepository.save(user);
@@ -59,7 +60,7 @@ public class UserService {
 
         public UserResponse patchById(Integer id, UpdateUserRequest dto){
             User user = userRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Id not found"));
+                    .orElseThrow(() -> new IdNotFoundException(id));
 
             if(dto.getPassword().equals(user.getPassword())){
                 if(userRepository.existsByEmail(dto.getEmail()) && !dto.getEmail().equals(user.getEmail())) {
@@ -82,6 +83,6 @@ public class UserService {
             userRepository.deleteById(id);
             return;
         }
-        throw new EntityNotFoundException("ID not found");
+        throw new IdNotFoundException(id);
     }
 }
