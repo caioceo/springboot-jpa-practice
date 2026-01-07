@@ -13,15 +13,15 @@ import lombok.Setter;
 
 public class UpdateUserRequest {
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
     private String email;
 
-    @NotBlank
-    @Size(min = 3, max = 99)
+    @NotBlank(message = "Name is required")
+    @Size(min = 3, max = 99, message = "Name must be between 3 and 99 characters")
     private String name;
 
-    @NotBlank
-    @Size(min = 6, max = 255)
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, max = 255, message = "Password must be between 6 and 255 characters")
     private final String password;
 }
